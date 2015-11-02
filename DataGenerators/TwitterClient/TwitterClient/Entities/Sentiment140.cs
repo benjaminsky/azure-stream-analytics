@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -29,13 +30,14 @@ namespace TwitterClient
                 ID = tweet.Id,
                 CreatedAt = ParseTwitterDateTime(tweet.CreatedAt),
                 UserName = tweet.User != null ? tweet.User.Name : null,
-                TimeZone = tweet.User != null ? (tweet.User.TimeZone != null ? tweet.User.TimeZone : "(unknown)") : "(unknown)", 
+                TimeZone = tweet.User != null ? (tweet.User.TimeZone != null ? tweet.User.TimeZone : "(unknown)") : "(unknown)",
                 ProfileImageUrl = tweet.User != null ? (tweet.User.ProfileImageUrl != null ? tweet.User.ProfileImageUrl : "(unknown)") : "(unknown)",
                 Text = tweet.Text,
                 Language = tweet.Language != null ? tweet.Language : "(unknown)",
                 RawJson = tweet.RawJson,
                 SentimentScore = (int)Analyze(tweet.Text),
                 Topic = DetermineTopc(tweet.Text, twitterKeywords),
+                HasSymbol = tweet.Entities != null ? (tweet.Entities.Symbols != null ? tweet.Entities.Symbols.Count() > 0: false) : false,
             };
         }
 

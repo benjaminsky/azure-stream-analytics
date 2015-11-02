@@ -48,6 +48,20 @@ namespace TwitterClient
     }
 
     [DataContract]
+    public class TwitterSymbol
+    {
+        [DataMember(Name = "text")]
+        public string Text;
+    }
+
+    [DataContract]
+    public class TwitterEntities
+    {
+        [DataMember(Name = "symbols")]
+        public TwitterSymbol[] Symbols;
+    }
+
+    [DataContract]
     public class Tweet
     {
         [DataMember(Name = "id")]                      public Int64 Id;
@@ -55,11 +69,12 @@ namespace TwitterClient
         [DataMember(Name = "in_reply_to_user_id")]     public Int64? ReplyToUserId;
         [DataMember(Name = "in_reply_to_screen_name")] public string ReplyToScreenName;
         [DataMember(Name = "retweeted")]               public bool Retweeted;
-        [DataMember(Name = "text")]                    public string Text;
+        [DataMember(Name = "text")]                    public string Text;    
         [DataMember(Name = "lang")]                    public string Language;
         [DataMember(Name = "source")]                  public string Source;
         [DataMember(Name = "retweet_count")]           public string RetweetCount;
         [DataMember(Name = "user")]                    public TwitterUser User;
+        [DataMember(Name = "entities")]                public TwitterEntities Entities;     
         [DataMember(Name = "created_at")]              public string CreatedAt;
         [IgnoreDataMember]                             public string RawJson;
 
@@ -180,13 +195,14 @@ namespace TwitterClient
         public string Text;
         public string Language;
         public string Topic;
+        public bool HasSymbol;
         public int SentimentScore;
 
         public string RawJson;
 
         public override string ToString()
         {
-            return new { ID, CreatedAt, UserName, TimeZone, ProfileImageUrl, Text, Language, Topic, SentimentScore }.ToString();
+            return new { ID, CreatedAt, UserName, TimeZone, ProfileImageUrl, Text, Language, Topic, SentimentScore, HasSymbol }.ToString();
         }
     }
 
@@ -194,11 +210,14 @@ namespace TwitterClient
     {
         public DateTime CreatedAt;
         public string Topic;
+        public string Text;
+        public bool HasSymbol;
+        public string UserName;
         public int SentimentScore;
                 
         public override string ToString()
         {
-            return new {  CreatedAt,  Topic, SentimentScore }.ToString();
+            return new {  CreatedAt,  Topic, Text, SentimentScore, HasSymbol, UserName }.ToString();
         }
     }
 
